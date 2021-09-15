@@ -274,11 +274,16 @@ def create_app():
     def get_specific_character(payload, id):
         try:
             character = Character.query.filter(Character.id == id).one_or_none()
+            movie = Movie.query.filter(Movie.id==character.movie_id).one_or_none()
+            actor = Actor.query.filter(Actor.id==character.actor_id).one_or_none()
+            character_json = character.format()
+            character_json['movie_title'] = movie.title
+            character_json['actor_name'] = actor.name
             if character is None:
                 abort(404)
             return jsonify({
                 'success': True,
-                'character': character.format()
+                'character': character_json
             })
         except:
             abort(404)
