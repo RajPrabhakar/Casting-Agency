@@ -1,11 +1,20 @@
+import os
+from dotenv import load_dotenv
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import backref
 from sqlalchemy.sql.schema import ForeignKey
 
+load_dotenv()
+
+database_path = os.getenv('SQLALCHEMY_DATABASE_URI')
+
 db = SQLAlchemy()
 
-def setup_db(app):
+def setup_db(app, database_path=database_path):
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
     db.create_all()
