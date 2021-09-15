@@ -2,9 +2,8 @@ import os
 from dotenv import load_dotenv
 
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Date
-from sqlalchemy.orm import backref
-from sqlalchemy.sql.schema import ForeignKey
+from sqlalchemy import Column, Integer, String, Date, ForeignKey
+from flask_migrate import Migrate
 
 load_dotenv()
 
@@ -15,9 +14,11 @@ db = SQLAlchemy()
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.drop_all()
     db.app = app
     db.init_app(app)
+
+def db_drop_and_create_all():
+    db.drop_all()
     db.create_all()
 
 class Movie(db.Model):

@@ -5,7 +5,7 @@ from logging import error
 from flask import Flask, jsonify, abort, request
 from flask_cors import CORS
 
-from models import setup_db, Movie, Actor, Character
+from models import setup_db, Movie, Actor, Character, db_drop_and_create_all
 from auth import AuthError, requires_auth
 
 load_dotenv()
@@ -18,6 +18,8 @@ def create_app():
     setup_db(app)
 
     CORS(app)
+
+    db_drop_and_create_all()
 
     @app.after_request
     def after_request(response):
