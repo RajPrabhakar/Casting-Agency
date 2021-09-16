@@ -340,6 +340,10 @@ curl --location --request PATCH 'https://superhero-casting-agency.herokuapp.com/
 - Description: Remove an actor from the Database
 - Roles Required: Casting Director
 ```bash
+curl --location --request DELETE 'https://superhero-casting-agency.herokuapp.com/actors/1' \
+--header 'Authorization: Bearer eyJhb...'
+```
+```bash
 {
     "deleted": 1,
     "success": true
@@ -348,6 +352,10 @@ curl --location --request PATCH 'https://superhero-casting-agency.herokuapp.com/
 14. **DELETE /characters/1**
 - Description: Remove a character from the Database
 - Roles Required: Casting Director
+```bash
+curl --location --request DELETE 'https://superhero-casting-agency.herokuapp.com/characters/1' \
+--header 'Authorization: Bearer eyJhb...'
+```
 ```bash
 {
     "deleted": 1,
@@ -382,7 +390,12 @@ curl --location --request POST 'https://superhero-casting-agency.herokuapp.com/m
 - Description: Remove a movie from the Database
 - Roles Required: Executive Producer
 ```bash
+curl --location --request DELETE 'https://superhero-casting-agency.herokuapp.com/movies/1' \
+--header 'Authorization: Bearer eyJhb...'
+```
+```bash
 {
     "deleted": 1,
     "success": true
 }
+```
