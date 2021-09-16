@@ -14,6 +14,7 @@ app.config.from_object('config')
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('SQLALCHEMY_DATABASE_URI')
 
 db = SQLAlchemy()
+db.init_app(app)
 CORS(app)
 migrate = Migrate(app, db)
 

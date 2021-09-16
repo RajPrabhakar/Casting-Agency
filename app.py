@@ -1,9 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from logging import error
-from flask import Flask, jsonify, abort, request
-
+from flask import jsonify, abort, request
 
 from models import app, Movie, Actor, Character
 from auth import AuthError, requires_auth
@@ -121,7 +119,7 @@ def patch_movie(payload, id):
             'success': True,
             'movie': movie.format()
         })
-    except error as e:
+    except Exception as e:
         print(e)
         abort(422)
 
@@ -199,7 +197,7 @@ def post_actor(payload):
             'success': True,
             'actor': new_actor.format()
         })
-    except error as e:
+    except Exception as e:
         print(e)
         abort(422)
 
@@ -226,7 +224,7 @@ def patch_actor(payload, id):
             'success': True,
             'actor': actor.format()
         })
-    except error as e:
+    except Exception as e:
         print(e)
         abort(422)
 
@@ -293,7 +291,7 @@ def post_character(payload):
             'success': True,
             'character': new_character.format()
         })
-    except error as e:
+    except Exception as e:
         print(e)
         abort(422)
 
@@ -318,7 +316,7 @@ def patch_character(payload, id):
             'success': True,
             'character': character.format()
         })
-    except error as e:
+    except Exception as e:
         print(e)
         abort(422)
 
