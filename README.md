@@ -41,21 +41,334 @@ Hosted API URL: https://superhero-casting-agency.herokuapp.com/
 
 ## Installation
 
-    ```bash
-    gh repo clone RajPrabhakar/Casting-Agency
-    python -m venv venv
-    venv/Scripts/activate
-    cd casting-agency
-    pip install -r requirements.txt
-    python app.py
-    ```
+```bash
+gh repo clone RajPrabhakar/Casting-Agency
+python -m venv venv
+venv/Scripts/activate
+cd casting-agency
+pip install -r requirements.txt
+python app.py
+```
 
 ## API Documentation
 
 ### Endpoints
 
 1. **GET /**
-- list of tokens and public endpoints
+- description: list of tokens and public endpoints
+- roles required: nil
+```bash
+curl --location --request GET 'https://superhero-casting-agency.herokuapp.com/'
+```
+```bash
+{
+  "access_tokens": {
+    "casting_assistant": "eyJhbGci...",
+    "casting_director": "eyJhbGciO...",
+    "executive_producer": "eyJhbGc..."
+  },
+  "available_links": {
+    "actors": "/actors",
+    "character": "/character",
+    "movies": "/movies"
+  },
+  "success": true
+}
+```
+2. **GET /movies**
+- description: list of available movies
+- roles required: nil
+```bash
+curl --location --request GET 'https://superhero-casting-agency.herokuapp.com/movies'
+```
+```bash
+{
+    "movies": [
+        {
+            "id": 1,
+            "poster": "https://images-na.ssl-images-amazon.com/images/I/91W-zEXbx8L._SL1400_.jpg",
+            "release_date": "Fri, 13 Dec 2013 00:00:00 GMT",
+            "title": "The Hobbit: The Desolation of Smaug"
+        }
+    ],
+    "success": true
+}
+```
+3. **GET /actors**
+- description: list of available actors
+- roles required: nil
+```bash
+curl --location --request GET 'https://superhero-casting-agency.herokuapp.com/actors'
+```
+```bash
+{
+    "actors": [
+        {
+            "age": 45,
+            "gender": "male",
+            "id": 1,
+            "image": "https://api.time.com/wp-content/uploads/2015/01/benedict-cumberbatch.jpg?w=824&quality=70",
+            "name": "Benedict Cumberbatch"
+        }
+    ],
+    "success": true
+}
+```
+4. **GET /characters**
+- description: list of available characters
+- roles required: nil
+```bash
+curl --location --request GET 'https://superhero-casting-agency.herokuapp.com/characters'
+```
+```bash
+{
+    "characters": [
+        {
+            "artist_id": 1,
+            "id": 1,
+            "movie_id": 1,
+            "name": "Bilbo Baggins"
+        }
+    ],
+    "success": true
+}
+```
+5. **GET /movies/<id>**
+- description: detailed view of the requested movie
+- roles required: Casting Assistant
+```bash
+curl --location --request GET 'https://superhero-casting-agency.herokuapp.com/movies/1' \
+--header 'Authorization: Bearer eyJhb...'
+```
+```bash
+{
+    "movie": {
+        "cast": [
+            {
+                "actor": {
+                    "id": 1,
+                    "image": "https://api.time.com/wp-content/uploads/2015/01/benedict-cumberbatch.jpg?w=824&quality=70",
+                    "name": "Benedict Cumberbatch"
+                },
+                "character_id": 1,
+                "character_name": "Bilbo Baggins"
+            }
+        ],
+        "id": 1,
+        "poster": "https://images-na.ssl-images-amazon.com/images/I/91W-zEXbx8L._SL1400_.jpg",
+        "release_date": "Fri, 13 Dec 2013 00:00:00 GMT",
+        "title": "The Hobbit: The Desolation of Smaug"
+    },
+    "success": true
+}
+```
+6. **GET /actors/<id>**
+- description: detailed view of the requested actor
+- roles required: Casting Assistant
+```bash
+curl --location --request GET 'https://superhero-casting-agency.herokuapp.com/actors/1' \
+--header 'Authorization: Bearer eyJhb...'
+```
+```bash
+{
+    "actor": {
+        "age": 45,
+        "gender": "male",
+        "id": 1,
+        "image": "https://api.time.com/wp-content/uploads/2015/01/benedict-cumberbatch.jpg?w=824&quality=70",
+        "movies": [
+            {
+                "character_id": 1,
+                "character_name": "Bilbo Baggins",
+                "movie": {
+                    "id": 1,
+                    "poster": "https://images-na.ssl-images-amazon.com/images/I/91W-zEXbx8L._SL1400_.jpg",
+                    "title": "The Hobbit: The Desolation of Smaug"
+                }
+            }
+        ],
+        "name": "Benedict Cumberbatch"
+    },
+    "success": true
+}
+```
+7. **GET /characters/<id>**
+- description: detailed view of the requested character
+- roles required: Casting Assistant
+```bash
+curl --location --request GET 'https://superhero-casting-agency.herokuapp.com/characters/1' \
+--header 'Authorization: Bearer eyJhb...'
+```
+```bash
+{
+    "character": {
+        "actor_name": "Benedict Cumberbatch",
+        "artist_id": 1,
+        "id": 1,
+        "movie_id": 1,
+        "movie_title": "The Hobbit: The Desolation of Smaug",
+        "name": "Bilbo Baggins"
+    },
+    "success": true
+}
+```
+8. **POST /actors**
+- description: list of tokens and public endpoints
+- roles required: Casting Director
+```bash
+curl --location --request POST 'https://superhero-casting-agency.herokuapp.com/actors' \
+--header 'Authorization: Bearer eyJhb...' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "Benedict Cumberbatch",
+    "age": "45",
+    "gender": "male",
+    "image": "https://api.time.com/wp-content/uploads/2015/01/benedict-cumberbatch.jpg?w=824&quality=70"
+}'
+```
+```bash
+{
+  "access_tokens": {
+    "casting_assistant": "eyJhbGci...",
+    "casting_director": "eyJhbGciO...",
+    "executive_producer": "eyJhbGc..."
+  },
+  "available_links": {
+    "actors": "/actors",
+    "character": "/character",
+    "movies": "/movies"
+  },
+  "success": true
+}
+```
+1. **GET /**
+- description: list of tokens and public endpoints
+- roles required: Casting Director
+```bash
+{
+  "access_tokens": {
+    "casting_assistant": "eyJhbGci...",
+    "casting_director": "eyJhbGciO...",
+    "executive_producer": "eyJhbGc..."
+  },
+  "available_links": {
+    "actors": "/actors",
+    "character": "/character",
+    "movies": "/movies"
+  },
+  "success": true
+}
+```
+1. **GET /**
+- description: list of tokens and public endpoints
+- roles required: Casting Director
+```bash
+{
+  "access_tokens": {
+    "casting_assistant": "eyJhbGci...",
+    "casting_director": "eyJhbGciO...",
+    "executive_producer": "eyJhbGc..."
+  },
+  "available_links": {
+    "actors": "/actors",
+    "character": "/character",
+    "movies": "/movies"
+  },
+  "success": true
+}
+```
+1. **GET /**
+- description: list of tokens and public endpoints
+- roles required: Casting Director
+```bash
+{
+  "access_tokens": {
+    "casting_assistant": "eyJhbGci...",
+    "casting_director": "eyJhbGciO...",
+    "executive_producer": "eyJhbGc..."
+  },
+  "available_links": {
+    "actors": "/actors",
+    "character": "/character",
+    "movies": "/movies"
+  },
+  "success": true
+}
+```
+1. **GET /**
+- description: list of tokens and public endpoints
+- roles required: Casting Director
+```bash
+{
+  "access_tokens": {
+    "casting_assistant": "eyJhbGci...",
+    "casting_director": "eyJhbGciO...",
+    "executive_producer": "eyJhbGc..."
+  },
+  "available_links": {
+    "actors": "/actors",
+    "character": "/character",
+    "movies": "/movies"
+  },
+  "success": true
+}
+```
+1. **GET /**
+- description: list of tokens and public endpoints
+- roles required: Casting Director
+```bash
+{
+  "access_tokens": {
+    "casting_assistant": "eyJhbGci...",
+    "casting_director": "eyJhbGciO...",
+    "executive_producer": "eyJhbGc..."
+  },
+  "available_links": {
+    "actors": "/actors",
+    "character": "/character",
+    "movies": "/movies"
+  },
+  "success": true
+}
+```
+1. **GET /**
+- description: list of tokens and public endpoints
+- roles required: Casting Director
+```bash
+{
+  "access_tokens": {
+    "casting_assistant": "eyJhbGci...",
+    "casting_director": "eyJhbGciO...",
+    "executive_producer": "eyJhbGc..."
+  },
+  "available_links": {
+    "actors": "/actors",
+    "character": "/character",
+    "movies": "/movies"
+  },
+  "success": true
+}
+```
+1. **GET /**
+- description: list of tokens and public endpoints
+- roles required: nil
+```bash
+{
+  "access_tokens": {
+    "casting_assistant": "eyJhbGci...",
+    "casting_director": "eyJhbGciO...",
+    "executive_producer": "eyJhbGc..."
+  },
+  "available_links": {
+    "actors": "/actors",
+    "character": "/character",
+    "movies": "/movies"
+  },
+  "success": true
+}
+```
+1. **GET /**
+- description: list of tokens and public endpoints
 - roles required: nil
 ```bash
 {
