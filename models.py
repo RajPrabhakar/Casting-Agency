@@ -9,14 +9,12 @@ from flask_cors import CORS
 
 load_dotenv()
 
-app = Flask(__name__)
-app.config.from_object('config')
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('SQLALCHEMY_DATABASE_URI')
-
 db = SQLAlchemy()
-db.init_app(app)
-CORS(app)
-migrate = Migrate(app, db)
+
+def setup_db(app):
+    db.app = app
+    db.init_app(app)
+    migrate = Migrate(app, db)
 
 class Movie(db.Model):
     __tablename__ = 'movie'

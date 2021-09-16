@@ -1,20 +1,19 @@
 import os, unittest, json
 from dotenv import load_dotenv
 
-from app import setup_db, create_app
+from app import create_app
+import config
 
 load_dotenv()
 
-CASTING_ASSISTANT = os.getenv('CASTING_ASSISTANT')
-CASTING_DIRECTOR = os.getenv('CASTING_DIRECTOR')
-EXECUTIVE_PRODUCER = os.getenv('EXECUTIVE_PRODUCER')
+CASTING_ASSISTANT = config.CASTING_ASSISTANT
+CASTING_DIRECTOR = config.CASTING_DIRECTOR
+EXECUTIVE_PRODUCER = config.EXECUTIVE_PRODUCER
 
 class CastingTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app()
+        self.app = create_app(config.SQLALCHEMY_DATABASE_URI_TEST)
         self.client = self.app.test_client
-        self.database_path = os.getenv('SQLALCHEMY_DATABASE_URI_TEST')
-        setup_db(self.app, self.database_path)
 
     def tearDown(self):
         pass
