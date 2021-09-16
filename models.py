@@ -1,25 +1,21 @@
 import os
 from dotenv import load_dotenv
 
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 load_dotenv()
 
-database_path = os.getenv('SQLALCHEMY_DATABASE_URI')
+app = Flask(__name__)
+app.config.from_object('config')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('SQLALCHEMY_DATABASE_URI')
 
 db = SQLAlchemy()
-
-def setup_db(app, database_path=database_path):
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.app = app
-    db.init_app(app)
-
-def db_drop_and_create_all():
-    db.drop_all()
-    db.create_all()
+CORS(app)
+migrate = Migrate(app, db)
 
 class Movie(db.Model):
     __tablename__ = 'movie'

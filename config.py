@@ -1,2 +1,3 @@
-DEBUG = True
-ENV = 'development'
+DEBUG = False
+ENV = 'prod'
+SQLALCHEMY_TRACK_MODIFICATIONS = False
